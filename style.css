@@ -1,0 +1,252 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html,
+body {
+  height: 100%;
+}
+
+body {
+  padding: 1rem;
+
+  --hue-0: 90;
+  --hue-1: 120;
+
+  --light: 90%;
+  --grayish: 70%;
+  --white: #fdfdfd;
+
+  color: #555;
+}
+body,
+::after,
+::before {
+  font-family: monospace;
+}
+
+main {
+  /* height: 100%; */
+
+  padding: 1rem;
+
+  /* border: 2px #ddd dashed; */
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  /* display: grid; */
+  /* place-items: center; */
+  /* justify-items: center; */
+  gap: 1rem;
+  grid-auto-rows: max-content;
+}
+
+body > button {
+  background-color: transparent;
+  padding-block: 0.35rem;
+  padding-inline: 1rem;
+
+  background-color: white;
+  border: 2px hsl(var(--hue-0) 50% 50%) solid;
+  color: hsl(var(--hue-1) 50% 50%);
+  text-transform: uppercase;
+  font-weight: bold;
+  border-radius: 0.5rem;
+
+  filter: invert(0);
+  transition: all 175ms ease;
+  cursor: pointer;
+}
+body > button:hover {
+  transition: all 75ms ease;
+  color: var(--white);
+  background-color: hsl(var(--hue-0) 50% 50%);
+}
+.card {
+  position: relative;
+  z-index: 10;
+  box-sizing: content-box;
+  height: 3.25rem;
+  max-width: 24rem;
+  width: 100%;
+
+  display: flex;
+  gap: 1rem;
+
+  padding: 0.55rem;
+  padding-right: 0.85rem;
+  padding-bottom: 0.85rem;
+
+  background-color: var(--white);
+  border-radius: 2ch;
+  border: 1px hsl(0 0% 0% / 0.035) solid;
+  box-shadow: 0 4px 24px -2px hsl(var(--hue-0) 50% 70% / 0.25);
+
+  transition: all 500ms ease;
+  animation: enter 125ms forwards;
+}
+.card use {
+  stroke: hsl(var(--hue-0) 40% 75%);
+}
+.card .check {
+  position: relative;
+  font-size: 2rem;
+  line-height: 1.125rem;
+  vertical-align: middle;
+  text-align: center;
+  position: absolute;
+  top: calc(50% - 1.125rem);
+  right: -1ch;
+  aspect-ratio: 1/1;
+  padding: 0.25ch;
+  border-radius: 50%;
+  opacity: 0;
+  --c: var(--hue-0);
+  color: hsl(var(--hue-1) 70% 40%);
+  background-color: hsl(var(--c) 80% 70% / 0.5);
+  border: 2px hsl(var(--c) 80% 70%) solid;
+
+  transition: opacity 125ms ease, background-color 75ms, border 75ms;
+}
+.card .check::after {
+  content: "✓";
+}
+.card.completed .check {
+  opacity: 1;
+}
+.card .check:hover {
+  color: hsl(10 70% 60%);
+  --c: 30;
+}
+.card .check:hover::after {
+  content: "\2A2F";
+}
+.card .icon {
+  isolation: isolate;
+  position: relative;
+
+  height: 100%;
+  aspect-ratio: 1/1;
+
+  padding: 0.25rem;
+
+  background-image: linear-gradient(
+    to bottom left,
+    var(--white),
+    hsl(var(--hue-0) 70% 90%)
+  );
+  border-radius: 100%;
+  border: 0.25rem hsl(var(--hue-0) 90% 90%) solid;
+
+  box-shadow: 0 0 22px 0px hsl(var(--hue-0) 90% 80% / 0.45);
+
+  stroke-width: 1px;
+  filter: grayscale(1);
+  animation: loadDelay 125ms 500ms ease-out forwards;
+}
+
+.card .info {
+  height: 100%;
+
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.35rem;
+}
+.card .info .text {
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.card .info .text h3 {
+  /* text-transform: uppercase;
+  letter-spacing: 0.25ch; */
+}
+.card .info div div {
+  display: flex;
+  justify-content: space-between;
+}
+.card .info div div span {
+  word-spacing: -0.5ch;
+  position: relative;
+}
+
+.card .info div div span:first-child::before {
+  /* margin-right: 0.5ch; */
+  content: attr(data-data);
+}
+.card .info div div span:last-child::before {
+  margin-right: 0.5ch;
+  content: attr(data-data);
+}
+
+.card .loading-bar {
+  position: relative;
+  height: 0.35rem;
+
+  border-radius: 1rem;
+  background-color: #eee;
+}
+
+.card .loading-bar::after {
+  position: absolute;
+
+  --h: 90%;
+  content: "";
+  height: calc(100% + var(--h));
+  width: 0%;
+
+  top: calc(var(--h) * -0.5);
+
+  border-radius: 1rem;
+
+  background-image: linear-gradient(
+    to right,
+    var(--white),
+    hsl(var(--hue-0) 70% 85%)
+  );
+
+  animation: load var(--dur, 550ms) 500ms forwards;
+}
+
+@keyframes loadDelay {
+  to {
+    filter: grayscale(0);
+    stroke-width: 2px;
+  }
+}
+
+@keyframes load {
+  from {
+    /* opacity: 0; */
+  }
+  to {
+    /* opacity: 1; */
+    width: 100%;
+  }
+}
+
+@keyframes enter {
+  from {
+    transform: translateY(-32px);
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes leave {
+  50% {
+    margin-top: -4rem;
+  }
+  100% {
+    margin-top: calc(-5.65rem - 2px);
+    opacity: 0;
+  }
+}
